@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pizzaria — Pedidos</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>🍕 Pizzaria do João</h1>
+    <p>Faça seu pedido e acompanhe tudo por aqui</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Novo pedido</h2>
+      <form id="form-pedido" novalidate>
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" placeholder="Seu nome" autocomplete="name">
+
+        <label for="sabor">Sabor</label>
+        <input id="sabor" type="text" placeholder="Ex.: Calabresa">
+
+        <label for="pagamento">Forma de pagamento</label>
+        <select id="pagamento">
+          <option value="">Escolha...</option>
+          <option value="pix">Pix</option>
+          <option value="cartão">Cartão</option>
+          <option value="dinheiro">Dinheiro</option>
+        </select>
+
+        <button type="submit" id="btn-pedido">Fazer pedido</button>
+        <p id="msg-form" class="msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Buscar pedido</h2>
+      <form id="form-busca" class="linha" novalidate>
+        <input id="busca-id" type="number" min="1" placeholder="Número do pedido" aria-label="Número do pedido">
+        <button type="submit">Buscar</button>
+      </form>
+      <div id="resultado-busca" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="lista">
+      <h2>Pedidos</h2>
+      <p id="msg-lista" class="msg" role="status" aria-live="polite"></p>
+      <div id="pedidos" class="grade"></div>
+    </section>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>

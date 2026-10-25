@@ -1,14 +1,21 @@
 import sqlite3
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 DB_ARQUIVO = "pedidos.db"
 
+sabores = ["calabresa","mussarela","frango com bacon","frango com catupiri","portuguesa",
+           "peperoni","4 queijos","carne seca","banana","chocolate"]
+
+tamanhos = ["G","M","P","Brotinho"]
 
 class Pedido(BaseModel):
     nome : str
     sabor : str
+    tamanho : str
     pagamento : str
 
 app = FastAPI()
@@ -54,6 +61,12 @@ def lista_pedidos():
 
 @app.post("/pedidos")
 def criar_pedidos(pedido: Pedido):
+    if pedido.sabor not in sabores:
+        raise HTTPException (status_code=400, detail="Sabor invalido!")
+
+    if pedido.tamanho not in tamanhos:
+        raise HTTPException (status_code=400, detail="Tamanho invalido!")
+     
     conn = conectar()
     # Insere um pedido novo; os "?" evitam SQL injection ao receber os valores
     cursor = conn.execute(
@@ -76,3 +89,6 @@ def buscar_pedido(pedido_id : int):
     if linha is not None:
         return linha_para_pedido(linha)
     raise HTTPException(status_code=404, detail="pedido não encontrado")
+
+# Serve a interface (pasta static) na rota "/"; fica por último para não esconder as rotas /pedidos
+app.mount("/", StaticFiles(directory=Path(__file__).parent / "static", html=True), name="static")
